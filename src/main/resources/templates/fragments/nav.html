@@ -8,7 +8,10 @@
             <th:block sec:authorize="isAuthenticated()">
                 <a href="/home" class="navbar-brand text-white h4 w-100">Food Delivery</a>
             </th:block>
-
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
     <th:block sec:authorize="isAnonymous()">
         <ul class="navbar-nav w-auto">
