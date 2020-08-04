@@ -95,12 +95,6 @@ public class UsersController extends BaseController{
          return modelAndView;
     }
 
-    @GetMapping("/logout")
-    @PreAuthorize("isAuthenticated()")
-    public String logout(HttpSession httpSession){
-        httpSession.invalidate();
-        return "redirect:/";
-    }
 
     @GetMapping("/edit")
     @PreAuthorize("isAuthenticated()")
