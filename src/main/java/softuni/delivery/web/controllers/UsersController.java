@@ -126,6 +126,7 @@ public class UsersController extends BaseController{
             modelAndView.addObject("userEditBindingModel", userEditBindingModel);
             return view("user/edit-user", modelAndView);
         }
+
         UserServiceModel userServiceModel = this.modelMapper.map(userEditBindingModel, UserServiceModel.class);
         this.userService.editUserProfile(userServiceModel, userEditBindingModel.getOldPassword());
         modelAndView.addObject("towns", this.townService
