@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="fragments/head"/>
+</head>
+<body>
+<header>
+    <th:block th:include="fragments/nav"/>
+</header>
+<div class="main">
+    <div class="px-4 px-lg-0">
+
+        <div class="container text-white py-5 text-center">
+            <h1 class="display-4">Order Confirm</h1>
+        </div>
+
+        <div class="pb-5" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+                        <!-- Shopping cart table -->
+                        <div class="table-responsive" th:each="p : ${products}">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="p-2 px-3 text-uppercase">Product</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Price</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Quantity</div>
+                                    </th>
+                                    <th scope="col" class="border-0 bg-light">
+                                        <div class="py-2 text-uppercase">Total Price</div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row" class="border-0">
+                                        <div class="p-2">
+                                            <img th:src="${p.imageUrl}" alt="" width="70" class="img-fluid rounded shadow-sm">
+                                            <div class="ml-3 d-inline-block align-middle">
+                                                <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle" th:text="${p.name}"></a></h5><span class="text-muted font-weight-normal font-italic d-block" th:text="|Category: ${p.category.name}|">Category: Watches</span>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td class="border-0 align-middle"><strong th:text="${p.price}"></strong></td>
+                                    <td class="border-0 align-middle"><strong th:text="${p.quantity}"></strong></td>
+                                    <td class="border-0 align-middle"><strong th:text="${p.totalPrice}"></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End -->
+                    </div>
+                </div>
+
+                <form th:action="@{/orders/create-order}"
+                      th:method="POST" th:object="${orderAddBindingModel}">
+                    <div class="row py-5 p-4 bg-white rounded shadow-sm">
+                        <div class="form-group" >
+                            <div class="text-white label-holder d-flex justify-content-center">
+                                <label for="address" class="h4 mb-2">Address</label>
+                            </div>
+                            <select class="browser-default custom-select" id="address" name="address">
+                                <option value="">Select address</option>
+                                <option th:each="a : ${addresses}"
+                                        th:value="${a.id}"
+                                        th:text="|${a.town.name}, ${a.street}, ${a.number}|"></option>
+
+                            </select>
+                            <small th:each="e : ${#fields.errors('address')}"  th:text="${e}"
+                                   class="text-danger"></small>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+                            <div class="p-4">
+                                <ul class="list-unstyled mb-4">
+                                    <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
+                                        <h5 class="font-weight-bold" th:text="|${totalPrice} лв.|"></h5>
+                                    </li>
+                                </ul>
+                                <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Proceed to checkout</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <footer>
+        <th:block th:include="~{fragments/foot}" />
+    </footer>
+
+    </section>
+</div>
+</body>
+</html>

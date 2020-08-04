@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="fragments/head"/>
+</head>
+<body>
+<header>
+    <th:block th:include="fragments/nav"/>
+</header>
+
+<main class="container fill">
+
+    <h1 class="text-center mt-2"><span class="badge badge-primary bg-secondary">Add Address</span></h1>
+    <hr class="hr-2 bg-white w-25">
+    <form class="bg-secondary w-25 mx-auto" th:action="@{/users/add/address}" th:method="post"
+          th:object="${addAddressBindingModel}">
+        <div class="form-group badge-primary">
+            <div class="text-justify label-holder d-flex justify-content-center">
+                <label for="town" class="h4 mb-2">Town</label>
+            </div>
+            <select class="browser-default custom-select" id="town" name="town">
+                <option value="">Select town</option>
+                <option th:each="t : ${towns}"
+                        th:value="${t.name}"
+                        th:text="${t.name}"></option>
+
+            </select>
+            <small th:each="e : ${#fields.errors('town')}"  th:text="${e}"
+                   class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="street" class="font-weight-bold text-justify">Street</label>
+            <input th:value="*{street}" th:errorclass="bg-warning" type="text" class="form-control" id="street" placeholder="Street..." name="street" required>
+            <th:block th:if="${#fields.hasErrors('street')}">
+                <small th:errors="*{street}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="number" class="font-weight-bold text-justify">Number</label>
+            <input th:value="*{number}" th:errorclass="bg-warning" type="number" class="form-control" id="number" placeholder="Number..." name="number">
+            <th:block th:if="${#fields.hasErrors('number')}">
+                <small th:errors="*{number}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="entrance" class="font-weight-bold text-justify">Entrance</label>
+            <input th:value="*{entrance}" type="text" th:errorclass="bg-warning" class="form-control" id="entrance" placeholder="Entrance..." name="entrance">
+            <th:block th:if="${#fields.hasErrors('entrance')}">
+                <small th:errors="*{entrance}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="floor" class="font-weight-bold text-justify" >Floor</label>
+            <input th:value="*{floor}" type="number" th:errorclass="bg-warning" class="form-control" id="floor" placeholder="Floor..." name="floor">
+            <th:block th:if="${#fields.hasErrors('floor')}">
+                <small th:errors="*{floor}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="apartmentNumber" class="font-weight-bold text-justify">Apartment Number</label>
+            <input th:value="*{apartmentNumber}" th:errorclass="bg-warning" type="number" class="form-control" id="apartmentNumber" placeholder="Apartment Number..." name="apartmentNumber">
+            <th:block th:if="${#fields.hasErrors('apartmentNumber')}">
+                <small th:errors="*{apartmentNumber}" class="text-error"></small>
+            </th:block>
+        </div>
+        <hr class="hr-2 bg-dark">
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn-group-vertical mb-3">Add</button>
+        </div>
+    </form>
+</main>
+
+<th:block th:include="fragments/foot"/>
+</body>
+
+</html>

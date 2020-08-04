@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="~{fragments/head}"/>
+
+</head>
+<body>
+<header>
+    <th:block th:include="~{fragments/nav}"/>
+</header>
+<tbody id="all-orders">
+<main class="container mt-4">
+    <hr class="hr-2 bg-dark w-100">
+
+    <div class="table-primary">
+        <h1 class="text-center mt-2"><span class="badge badge-primary bg-secondary">Your orders</span></h1>
+        <hr class="hr-2 bg-dark w-100">
+        <table class="table table-hover w-100 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+
+                <th class="col-md-2 text-center font-weight-bold">ID</th>
+                <th class="col-md-3 text-center font-weight-bold">Ordered on:</th>
+                <th class="col-md-1 text-center font-weight-bold">Price</th>
+                <th class="col-md-2 text-center font-weight-bold">Status</th>
+                <th class="col-md-2 text-center font-weight-bold">Restaurant</th>
+                <th class="col-md-2 text-center font-weight-bold">Address for delivery</th>
+            </tr>
+            <thead>
+            <tr class="row mx-auto" th:each="order : ${orders}" th:object="${order}">
+
+                <th class="col-md-2 text-center font-weight-bold" th:text="*{id}"></th>
+                <th class="col-md-3 text-center font-weight-bold" th:text="*{orderedOn}"></th>
+                <th class="col-md-1 text-center font-weight-bold" th:text="*{totalPrice}"></th>
+                <th th:if="*{inPending}" class="col-md-2 text-center font-weight-bold" style="color: #dfa405">
+                    In Pending</th>
+                <th th:if="*{accepted}" class="col-md-2 text-center font-weight-bold text-success">
+                    Accepted</th>
+                <th class="col-md-2 text-center font-weight-bold" th:text="*{restaurant.name}"></th>
+                <th class="col-md-2 text-center font-weight-bold"
+                    th:text="|${order.address.town.name}, ${order.address.street}, ${order.address.number}|"></th>
+            </tr>
+            </thead>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+
+<th:block th:include="~{fragments/foot}"/>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+package softuni.delivery.repository;
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import softuni.delivery.model.entity.User;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findByUsername(String username);
+
+    User findByEmail(String email);
+
+    User findByPhoneNumber(String phoneNumber);
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="~{fragments/head}"/>
+
+</head>
+<body>
+<header>
+    <th:block th:include="~{fragments/nav}"/>
+</header>
+<tbody id="all-orders">
+<main class="container mt-4">
+    <hr class="hr-2 bg-dark w-100">
+
+<div class="table-primary" >
+    <h1 class="text-center mt-2">
+        <span class="badge badge-primary bg-secondary">Pending orders</span>
+    </h1>
+    <hr class="hr-2 bg-dark w-100">
+    <table class="table table-hover w-100 mx-auto">
+        <thead>
+        <tr class="row mx-auto">
+            <th class="col-md-2 text-center font-weight-bold">ID</th>
+            <th class="col-md-2 text-center font-weight-bold">Ordered on:</th>
+            <th class="col-md-1 text-center font-weight-bold">Price</th>
+            <th class="col-md-1 text-center font-weight-bold">Status</th>
+            <th class="col-md-2 text-center font-weight-bold">User</th>
+            <th class="col-md-1 text-center font-weight-bold">Restaurant</th>
+            <th class="col-md-1 text-center font-weight-bold">Address for delivery</th>
+            <th class="col-md-1 text-center font-weight-bold">Phone number</th>
+        </tr>
+        <thead>
+       <form th:each="pendingOrder : ${pendingOrders}" th:object="${pendingOrder}"
+       th:href="@{/orders/all-orders/{id}(id = ${pendingOrder.id})}">
+        <tr class="row mx-auto" >
+            <th class="col-md-2 text-center font-weight-bold" th:text="*{id}"></th>
+            <th class="col-md-2 text-center font-weight-bold" th:text="*{orderedOn}"></th>
+            <th class="col-md-1 text-center font-weight-bold" th:text="*{totalPrice}"></th>
+                <th class="col-md-1 text-center font-weight-bold"
+                    th:value="allOrders">
+                    In Pending
+                    <a th:href="@{/orders/all-orders/{id}(id = ${pendingOrder.id})}" id="accept" class="btn-group-vertical mb-3">Accept</a></th>
+
+            <th class="col-md-2 text-center font-weight-bold" th:text="*{user.username}"></th>
+            <th class="col-md-1 text-center font-weight-bold" th:text="*{restaurant.name}"></th>
+            <th class="col-md-1 text-center font-weight-bold"
+                th:text="|${pendingOrder.address.town.name}, ${pendingOrder.address.street}, ${pendingOrder.address.number}|"></th>
+            <th class="col-md-1 text-center font-weight-bold" th:text="*{user.phoneNumber}"></th>
+        </tr>
+       </form>
+        </thead>
+        </tbody>
+    </table>
+</div>
+    <div class="table-primary" >
+        <h1 class="text-center mt-2">
+            <span class="badge badge-primary bg-secondary">Accepted orders</span>
+        </h1>
+        <hr class="hr-2 bg-dark w-100">
+        <table class="table table-hover w-100 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-2 text-center font-weight-bold">ID</th>
+                <th class="col-md-2 text-center font-weight-bold">Ordered on:</th>
+                <th class="col-md-1 text-center font-weight-bold">Price</th>
+                <th class="col-md-1 text-center font-weight-bold">Status</th>
+                <th class="col-md-2 text-center font-weight-bold">User</th>
+                <th class="col-md-1 text-center font-weight-bold">Restaurant</th>
+                <th class="col-md-1 text-center font-weight-bold">Address for delivery</th>
+                <th class="col-md-1 text-center font-weight-bold">Phone number</th>
+            </tr>
+            <thead>
+            <form th:each="acceptedOrder : ${acceptedOrders}" th:object="${acceptedOrder}"
+                  th:href="@{/orders/all-orders/{id}(id = ${acceptedOrder.id})}">
+                <tr class="row mx-auto" >
+                    <th class="col-md-2 text-center font-weight-bold" th:text="*{id}"></th>
+                    <th class="col-md-2 text-center font-weight-bold" th:text="*{orderedOn}"></th>
+                    <th class="col-md-1 text-center font-weight-bold" th:text="*{totalPrice}"></th>
+                    <th class="col-md-1 text-center font-weight-bold"
+                        th:value="allOrders">
+                        Accepted
+                        <a th:href="@{/orders/all-orders/{id}(id = *{id})}" id="finished" class="btn-group-vertical mb-3">Finished</a></th>
+
+                    <th class="col-md-2 text-center font-weight-bold" th:text="*{user.username}"></th>
+                    <th class="col-md-1 text-center font-weight-bold" th:text="*{restaurant.name}"></th>
+                    <th class="col-md-1 text-center font-weight-bold"
+                        th:text="|${acceptedOrder.address.town.name}, ${acceptedOrder.address.street}, ${acceptedOrder.address.number}|"></th>
+                    <th class="col-md-1 text-center font-weight-bold" th:text="*{user.phoneNumber}"></th>
+                </tr>
+            </form>
+            </thead>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer class="mt-5">
+    <th:block th:include="~{fragments/foot}"></th:block>
+</footer>
+</body>
+</html>

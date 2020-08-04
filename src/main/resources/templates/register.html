@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+<header>
+        <th:block th:include="~{/fragments/nav}"></th:block>
+</header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-primary bg-secondary">Register</span></h1>
+    <hr class="hr-3"/>
+    <form class="mx-auto w-25 bg-dark bg-info p-3 rounded"
+          th:object="${userRegisterBindingModel}" th:action="@{/users/register}" method="POST">
+        <div class="form-group badge-primary">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-justify">Username</label>
+            </div>
+            <input th:field="*{username}" th:errorclass="bg-warning" type="text" class="form-control" id="username" name="username"/>
+            <small th:each="e : ${#fields.errors('username')}" th:text="${e}" class="text-error"></small>
+            <small th:if="${userExists}" class="text-center bg-dark text-danger">User with that username already exists!</small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-justify">First Name</label>
+            </div>
+            <input th:field="*{firstName}" th:errorclass="bg-warning" type="text" class="form-control" id="firstName" name="firstName"/>
+            <small th:each="e : ${#fields.errors('firstName')}" th:text="${e}" class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-justify">Last Name</label>
+            </div>
+            <input th:field="*{lastName}" th:errorclass="bg-warning" type="text" class="form-control" id="lastName" name="lastName"/>
+            <small th:each="e : ${#fields.errors('lastName')}" th:text="${e}" class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-justify">Phone Number</label>
+            </div>
+            <input th:field="*{phoneNumber}" th:errorclass="bg-warning" type="text" class="form-control" id="phoneNumber" name="phoneNumber"/>
+            <small th:each="e : ${#fields.errors('phoneNumber')}" th:text="${e}" class="text-error"></small>
+            <small th:if="${phoneExists}" class="text-center bg-dark text-danger">User with that phone number already exists!</small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-justify">Email</label>
+            </div>
+            <input th:field="*{email}" th:errorclass="bg-warning" type="text" class="form-control" id="email" name="email"/>
+            <small th:each="e : ${#fields.errors('email')}" th:text="${e}" class="text-error">Incorrect username!</small>
+            <small th:if="${emailExists}" class="text-error">User with that email already exists!</small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="password" class="h4 mb-2 text-justify">Password</label>
+            </div>
+            <input th:field="*{password}" th:errorclass="bg-warning" type="password" class="form-control" id="password" name="password" />
+            <small th:each="e : ${#fields.errors('password')}" th:text="${e}" class="text-error">Incorrect pasword!</small>
+            <small th:if="${passwordNotEquals}" class="text-error">Passwords do not match!</small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="confirmPassword" class="h4 mb-2 text-justify">Confirm Password</label>
+            </div>
+            <input th:field="*{confirmPassword}" th:errorclass="bg-warning" type="password" class="form-control" id="confirmPassword" name="confirmPassword"/>
+
+        </div>
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn-group-vertical mb-3" value="Register">Register</button>
+        </div>
+    </form>
+</main>
+<head>
+    <th:block th:include="~{/fragments/foot}"></th:block>
+</head>
+</body>
+</html>

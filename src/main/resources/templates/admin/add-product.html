@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:include="~{/fragments/nav}"></th:block>
+</header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-primary bg-secondary">Add product</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+    <form class="mx-auto w-25 bg-secondary"
+          th:object="${productAddBindingModel}" th:action="@{/products/add/(id = *{categoryId})}" method="POST"
+          enctype="multipart/form-data">
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="name" class="h3 mb-2">Name</label>
+            </div>
+            <input th:field="*{name}" th:errorclass="bg-warning" type="text" class="form-control" id="name" name="name"/>
+            <small th:each="e : ${#fields.errors('name')}" th:text="${e}" class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="size" class="h3 mb-2">Size</label>
+            </div>
+            <input th:field="*{size}" th:errorclass="bg-warning" type="number" class="form-control" id="size" name="size"/>
+            <small th:each="e : ${#fields.errors('size')}" th:text="${e}" class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="description" class="h3 mb-2">Description</label>
+            </div>
+            <input th:field="*{description}" th:errorclass="bg-warning" type="text" class="form-control" id="description" name="description"/>
+            <small th:each="e : ${#fields.errors('description')}" th:text="${e}" class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="price" class="h3 mb-2">Price</label>
+            </div>
+            <input th:field="*{price}" th:errorclass="bg-warning" type="number" step="0.1" class="form-control" id="price" name="price"/>
+            <small th:each="e : ${#fields.errors('price')}" th:text="${e}" class="text-error"></small>
+        </div>
+       <!-- <div class="form-group badge-primary">
+            <div class="text-justify label-holder d-flex justify-content-center">
+                <label for="town" class="h4 mb-2">Town</label>
+            </div>
+            <select class="browser-default custom-select" id="town" name="town">
+                <option value="">Select town</option>
+                <option th:each="t : ${towns}"
+                        th:value="${t.name}"
+                        th:text="${t.name}"></option>
+
+            </select>
+            <small th:each="e : ${#fields.errors('town')}"  th:text="${e}"
+                   class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="text-justify label-holder d-flex justify-content-center">
+                <label for="restaurant" class="h4 mb-2">Town</label>
+            </div>
+            <select class="browser-default custom-select" id="restaurant" name="restaurant">
+                <option value="">Select restaurant</option>
+                <option th:each="r : ${restaurants}"
+                        th:value="${r.name}"
+                        th:text="${r.name}"></option>
+
+            </select>
+            <small th:each="e : ${#fields.errors('restaurant')}"  th:text="${e}"
+                   class="text-error"></small>
+        </div>
+        <div class="form-group badge-primary">
+            <div class="text-justify label-holder d-flex justify-content-center">
+                <label for="category" class="h4 mb-2">Category</label>
+            </div>
+            <select class="browser-default custom-select" id="category" name="category">
+                <option value="">Select category</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.name}"
+                        th:text="${c.name}"></option>
+
+            </select>
+            <small th:each="e : ${#fields.errors('category')}"  th:text="${e}"
+                   class="text-error"></small>
+        </div>-->
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="imageUrl" class="h3 mb-2">Select image</label>
+            </div>
+            <input th:field="*{imageUrl}" th:errorclass="bg-warning" type="file" class="form-control" id="imageUrl" name="imageUrl"/>
+            <small th:each="e : ${#fields.errors('imageUrl')}" th:text="${e}" class="text-error"></small>
+        </div>
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn-group-vertical mb-3">Add</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

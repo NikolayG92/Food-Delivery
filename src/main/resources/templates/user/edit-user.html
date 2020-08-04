@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="fragments/head"/>
+</head>
+<body>
+<header>
+    <th:block th:include="fragments/nav"/>
+</header>
+
+<main class="container fill">
+
+    <h1 class="text-center mt-2"><span class="badge badge-primary bg-secondary">Edit profile</span></h1>
+    <hr class="hr-2 bg-white w-25">
+    <form class="bg-secondary w-25 mx-auto" th:object="${userEditBindingModel}"
+          th:action="@{/users/edit}" th:method="post">
+        <div class="form-group badge-primary">
+            <label for="username" class="font-weight-bold text-justify">Username</label>
+            <input type="text" th:value="*{username}" th:errorclass="bg-warning" class="form-control" name="username" id="username" readonly>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="oldPassword" class="font-weight-bold text-justify">Old Password</label>
+            <input th:value="*{oldPassword}" th:errorclass="bg-warning" type="password" class="form-control" id="oldPassword" placeholder="Password..." name="oldPassword" required>
+            <th:block th:if="${#fields.hasErrors('oldPassword')}">
+                <small th:errors="*{oldPassword}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="password" class="font-weight-bold text-justify">New Password</label>
+            <input th:value="*{password}" th:errorclass="bg-warning"  type="password" class="form-control" id="password" placeholder="New Password..." name="password">
+            <th:block th:if="${#fields.hasErrors('password')}">
+                <small th:errors="*{password}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="confirmPassword" class="font-weight-bold text-justify">Confirm New Password</label>
+            <input th:value="*{confirmPassword}" th:errorclass="bg-warning" type="password" class="form-control" id="confirmPassword" placeholder="Confirm New Password..." name="confirmPassword">
+            <th:block th:if="${#fields.hasErrors('password')}">
+                <small th:errors="*{password}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="email" class="font-weight-bold text-justify">Email</label>
+            <input th:value="*{email}" type="email" class="form-control" th:errorclass="bg-warning" id="email" placeholder="Email..." name="email">
+            <th:block th:if="${#fields.hasErrors('email')}">
+                <small th:errors="*{email}" class="text-error"></small>
+            </th:block>
+        </div>
+        <div class="form-group badge-primary">
+            <label for="phoneNumber" class="font-weight-bold text-justify">Phone Number</label>
+            <input th:value="*{phoneNumber}" type="text" th:errorclass="bg-warning" class="form-control" id="phoneNumber" placeholder="Phone Number..." name="phoneNumber">
+            <th:block th:if="${#fields.hasErrors('phoneNumber')}">
+                <small th:errors="*{phoneNumber}" class="text-error"></small>
+            </th:block>
+        </div>
+        <hr class="hr-2 bg-dark">
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn-group-vertical mb-3">Update</button>
+        </div>
+    </form>
+</main>
+
+<th:block th:include="fragments/foot"/>
+</body>
+</html>

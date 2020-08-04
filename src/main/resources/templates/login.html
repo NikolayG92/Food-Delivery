@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <th:block th:include="~{fragments/nav}"></th:block>
+</header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-primary bg-secondary">Login</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+    <form class="mx-auto w-25 bg-secondary"
+        th:action="@{/users/login}" method="POST">
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="username" class="h3 mb-2">Username</label>
+            </div>
+            <input type="text" class="form-control" id="username" name="username"/>
+        </div>
+        <th:block th:if="${param.error}">
+                <span style="color: #a71004">Wrong username or password!</span>
+        </th:block>
+        <div class="form-group badge-primary">
+            <div class="label-holder text-justify d-flex justify-content-center">
+                <label for="password" class="h3 mb-2">Password</label>
+            </div>
+            <input type="password" class="form-control" id="password" name="password"/>
+        </div>
+        <div class="button-holder d-flex justify-content-center">
+                <button type="submit" class="btn-group-vertical mb-3">Login</button>
+        </div>
+    </form>
+
+</main>
+<footer class="footer bg-transparent  py-2">
+    <th:block th:include="~{fragments/foot}"></th:block>
+</footer>
+</body>
+</html>
