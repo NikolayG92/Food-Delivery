@@ -28,15 +28,15 @@ public class Order extends BaseEntity{
     @Column(name = "ordered_on", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:MM:ss")
     private LocalDateTime orderedOn;
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
     @Column(name = "total_price")
     private BigDecimal totalPrice;
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
     private Restaurant restaurant;
 }

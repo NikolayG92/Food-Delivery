@@ -127,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
         user.getOrders().remove(order);
         order.setAddress(null);
         order.setRestaurant(null);
+        order.setUser(null);
         this.orderRepository.saveAndFlush(order);
         this.orderRepository.delete(order);
 
