@@ -27,7 +27,7 @@ public class DeleteOrdersScheduler {
         this.modelMapper = modelMapper;
     }
 
-    @Scheduled(cron = "0 23 * * * ?")
+    @Scheduled(cron = "0 0 23 * * ?")
     public void deleteOrders(){
         List<OrderServiceModel> orders = this.orderRepository
                 .findAll()
