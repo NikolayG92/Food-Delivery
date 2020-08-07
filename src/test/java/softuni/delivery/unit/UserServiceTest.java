@@ -199,7 +199,6 @@ public class UserServiceTest extends BaseTest {
                 .thenReturn(List.of(new Role("ADMIN")));
 
         userService.register(user);
-
         verify(userRepository)
                 .save(any());
     }*/

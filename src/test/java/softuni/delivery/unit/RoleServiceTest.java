@@ -52,7 +52,7 @@ public class RoleServiceTest extends BaseTest {
 
         assertEquals(0, roles.size());
     }
-    // ==================
+
     @Test
     public void findAllRoles_whenAnyRolesInDb_shouldReturnAllCorrect() {
 

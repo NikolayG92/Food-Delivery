@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 
 public class AddressServiceTest extends BaseTest {
 
+    
     @MockBean
     AddressRepository addressRepository;
 
