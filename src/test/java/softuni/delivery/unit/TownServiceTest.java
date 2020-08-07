@@ -30,7 +30,6 @@ public class TownServiceTest extends BaseTest {
     @MockBean
     TownRepository townRepository;
 
-
     @Autowired
     TownService townService;
 

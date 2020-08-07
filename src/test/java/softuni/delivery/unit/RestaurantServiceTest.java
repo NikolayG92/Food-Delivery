@@ -51,7 +51,6 @@ public class RestaurantServiceTest extends BaseTest {
     @MockBean
     CategoryRepository categoryRepository;
 
-
     @Test
     public void findById_shouldFindCorrectRestaurantIfItExists() {
         Restaurant restaurant = new Restaurant();

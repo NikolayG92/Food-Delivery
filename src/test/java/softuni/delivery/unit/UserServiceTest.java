@@ -203,6 +203,7 @@ public class UserServiceTest extends BaseTest {
                 .save(any());
     }*/
 
+
     @Test
     public void addRoleToUser_shouldAddNewRoleToUser() {
         User user = new User();

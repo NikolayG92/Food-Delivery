@@ -42,7 +42,6 @@ public class CategoryServiceTest extends BaseTest {
     @Autowired
     ProductService productService;
 
-
     @Test
     public void findAllCategories_ifNotEmptyShouldReturnCollection(){
 

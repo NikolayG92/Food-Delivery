@@ -90,7 +90,6 @@ public class ProductServiceTest extends BaseTest {
     }
 */
 
-
     @Test
     public void addProduct_shouldAddProduct(){
         ProductServiceModel product = new ProductServiceModel();

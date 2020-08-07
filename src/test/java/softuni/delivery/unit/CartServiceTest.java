@@ -35,7 +35,6 @@ public class CartServiceTest {
         cart.setProducts(new ArrayList<>());
     }
 
-
     @Test
     public void findTotalPrice_shouldReturnCorrectPrice(){
         ProductViewModel productViewModel = new ProductViewModel();
