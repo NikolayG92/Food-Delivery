@@ -8,11 +8,13 @@ import softuni.delivery.model.entity.Category;
 import softuni.delivery.model.entity.Restaurant;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
 
-    List<Category> findAllByRestaurant(Restaurant restaurant);
+    Set<Category> findAllByRestaurant(Restaurant restaurant);
 
     Category findByNameAndRestaurant(String name, Restaurant restaurant);
+
 }

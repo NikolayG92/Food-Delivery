@@ -9,6 +9,7 @@ import softuni.delivery.exceptions.UserNotFoundException;
 import softuni.delivery.model.entity.Category;
 import softuni.delivery.model.entity.Product;
 import softuni.delivery.model.entity.User;
+import softuni.delivery.model.service.CategoryServiceModel;
 import softuni.delivery.model.service.ProductServiceModel;
 import softuni.delivery.model.service.UserServiceModel;
 import softuni.delivery.model.view.ProductViewModel;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ProductServiceTest extends BaseTest {
@@ -87,4 +90,18 @@ public class ProductServiceTest extends BaseTest {
     }
 */
 
+    @Test
+    public void addProduct_shouldAddProduct(){
+        ProductServiceModel product = new ProductServiceModel();
+        product.setName("productName");
+        product.setId("1");
+
+        when(productRepository.findById("1"))
+                .thenReturn(Optional.empty());
+
+        productService.addProduct(product);
+        verify(productRepository)
+                .saveAndFlush(any());
+
+    }
 }

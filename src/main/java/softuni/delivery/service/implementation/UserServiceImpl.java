@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void register(UserServiceModel userServiceModel) {
+    public UserServiceModel register(UserServiceModel userServiceModel) {
 
         if(this.userRepository.findAll().size() == 0){
             this.roleService.seedRolesInDb();
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         user.setPassword(bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
 
-        this.userRepository.saveAndFlush(user);
+        return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
     }
 
     @Override

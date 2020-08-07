@@ -14,6 +14,4 @@ public interface CartService {
     ProductViewModel findByName(String name);
 
     void removeProduct(ProductViewModel product, CartViewModel cart);
-
-    void addProductToCart(ProductViewModel productViewModel, CartViewModel cartViewModel);
 }

@@ -16,16 +16,18 @@ import softuni.delivery.model.entity.Town;
 import softuni.delivery.model.service.CategoryServiceModel;
 import softuni.delivery.model.service.RestaurantServiceModel;
 import softuni.delivery.model.service.TownServiceModel;
+import softuni.delivery.model.view.RestaurantViewModel;
+import softuni.delivery.repository.CategoryRepository;
 import softuni.delivery.repository.RestaurantRepository;
+import softuni.delivery.repository.TownRepository;
 import softuni.delivery.service.CategoryService;
 import softuni.delivery.service.RestaurantService;
 import softuni.delivery.service.TownService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -43,8 +45,14 @@ public class RestaurantServiceTest extends BaseTest {
     @Autowired
     TownService townService;
 
+    @MockBean
+    TownRepository townRepository;
+
+    @MockBean
+    CategoryRepository categoryRepository;
+
     @Test
-    public void findById_shouldFindCorrectRestaurantIfItExists(){
+    public void findById_shouldFindCorrectRestaurantIfItExists() {
         Restaurant restaurant = new Restaurant();
         restaurant.setId("1");
         restaurant.setName("Sofia");
@@ -58,7 +66,7 @@ public class RestaurantServiceTest extends BaseTest {
     }
 
     @Test
-    public void findById_shouldThrowExceptionIfDoesntExist(){
+    public void findById_shouldThrowExceptionIfDoesntExist() {
         Restaurant restaurant = new Restaurant();
         restaurant.setId("1");
 
@@ -68,7 +76,7 @@ public class RestaurantServiceTest extends BaseTest {
     }
 
     @Test
-    public void findAllRestaurants_shouldFindAllRestaurants(){
+    public void findAllRestaurants_shouldFindAllRestaurants() {
         List<Restaurant> restaurants = new ArrayList<>();
         Restaurant restaurant = new Restaurant();
         Restaurant restaurant1 = new Restaurant();
@@ -82,7 +90,7 @@ public class RestaurantServiceTest extends BaseTest {
     }
 
     @Test
-    public void findAllRestaurants_shouldThrowExceptionIfThereArentRestaurants(){
+    public void findAllRestaurants_shouldThrowExceptionIfThereArentRestaurants() {
         List<Restaurant> restaurants = new ArrayList<>();
 
         when(restaurantRepository.findAll())
@@ -94,7 +102,7 @@ public class RestaurantServiceTest extends BaseTest {
     }
 
     @Test
-    public void findByName_shouldReturnRestaurantIfExists(){
+    public void findByName_shouldReturnRestaurantIfExists() {
         Restaurant restaurant = new Restaurant();
         restaurant.setName("Sps");
         when(restaurantRepository.findByName("Sps"))
@@ -105,7 +113,7 @@ public class RestaurantServiceTest extends BaseTest {
     }
 
     @Test
-    public void findByName_shouldThrowExceptionIfDoesntExist(){
+    public void findByName_shouldThrowExceptionIfDoesntExist() {
         Restaurant restaurant = new Restaurant();
         restaurant.setName("Sps");
 
@@ -114,7 +122,7 @@ public class RestaurantServiceTest extends BaseTest {
     }
 
     @Test
-    public void findRestaurantsByTownId_shouldReturnRestaurantsByTown(){
+    public void findRestaurantsByTownId_shouldReturnRestaurantsByTown() {
         Town town = new Town();
         town.setId("1");
         Restaurant restaurant = new Restaurant();
@@ -127,4 +135,48 @@ public class RestaurantServiceTest extends BaseTest {
 
         assertEquals(2, restaurantService.findRestaurantsByTownId(town.getId()).size());
     }
+
+    /*    @Test
+        public void findRestaurantsByTownId_shouldReturnCollectionOfRestaurants(){
+            Town town = new Town();
+            town.setId("1");
+
+            town.setRestaurants(new ArrayList<>());
+            town.getRestaurants().add(new Restaurant());
+            town.getRestaurants().add(new Restaurant());
+            List<Restaurant> restaurants = town.getRestaurants();
+            when(restaurantRepository.findAllByTown(town))
+                    .thenReturn(restaurants);
+            when(townRepository.findById("1"))
+                    .thenReturn(Optional.of(town));
+
+            List<RestaurantViewModel> restaurantServiceModels =
+                    restaurantService.findRestaurantsByTownId("1");
+
+            assertEquals(2, restaurantServiceModels.size());
+        }*/
+/*    @Test
+    public void findRestaurantsByCategoryId_shouldReturnCollectionOfRestaurants() {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId("1");
+        Category category = new Category();
+        category.setId("1");
+        Category category1 = new Category();
+        category1.setId("2");
+        restaurant.setCategory(new HashSet<>());
+        restaurant.getCategory().add(category);
+        restaurant.getCategory().add(category1);
+
+        when(restaurantRepository.findById("1"))
+                .thenReturn(Optional.of(restaurant));
+
+        when(categoryRepository.findById("1"))
+                .thenReturn(Optional.of(category));
+
+        RestaurantServiceModel restaurantServiceModel = restaurantService.findByCategoryId("1");
+
+        assertEquals(restaurant.getId(), restaurantServiceModel.getId());
+
+    }*/
+
 }

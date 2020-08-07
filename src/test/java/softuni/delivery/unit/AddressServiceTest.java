@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import softuni.delivery.BaseTest;
 import softuni.delivery.model.entity.Address;
-import softuni.delivery.model.entity.Town;
-import softuni.delivery.model.entity.User;
+
 import softuni.delivery.model.service.AddressServiceModel;
 import softuni.delivery.repository.AddressRepository;
 import softuni.delivery.service.AddressService;
@@ -14,6 +13,7 @@ import softuni.delivery.service.AddressService;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class AddressServiceTest extends BaseTest {
@@ -24,17 +24,28 @@ public class AddressServiceTest extends BaseTest {
     @Autowired
     AddressService addressService;
 
-/*    @Test
+    @Test
     public void findById_shouldFindAddressById(){
+        Address address = new Address();
+        address.setId("1");
+        when(addressRepository.findById("1"))
+                .thenReturn(Optional.of(address));
 
-       Address address = new Address();
-       address.setStreet("Vitoshka");
+        AddressServiceModel addressServiceModel = addressService.findById("1");
 
-       AddressServiceModel addressServiceModel = addressService.findById(address.getId());
+        assertEquals("1", addressServiceModel.getId());
 
-       assertEquals("Vitoshka", addressServiceModel.getStreet());
+    }
 
-    }*/
+    @Test
+    public void findById_shouldThrowExceptionIfAddressDoesntExist(){
+
+        Address address = new Address();
+        address.setId("1");
+
+        assertThrows(Exception.class, () ->
+                addressService.findById(address.getId()), address.getId());
+    }
 
 
 }

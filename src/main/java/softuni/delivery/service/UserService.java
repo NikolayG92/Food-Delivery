@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void register(UserServiceModel user);
+    UserServiceModel register(UserServiceModel user);
 
     UserServiceModel findByUsername(String username) throws UserNotFoundException;
 

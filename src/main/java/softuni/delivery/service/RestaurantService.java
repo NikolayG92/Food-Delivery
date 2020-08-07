@@ -14,8 +14,6 @@ public interface RestaurantService {
 
     Restaurant findById(String id);
 
-   /* void deleteRestaurant(String id);*/
-
     List<Restaurant> findAllRestaurants();
 
     Restaurant findByName(String restaurant);

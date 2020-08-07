@@ -19,9 +19,8 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressServiceModel findById(String addressId) {
-        Address address = this.addressRepository.findById(addressId).orElse(null);
-        AddressServiceModel addressServiceModel = this.modelMapper
-                .map(address, AddressServiceModel.class);
-        return addressServiceModel;
+        return this.modelMapper
+                .map(this.addressRepository
+                .findById(addressId).orElse(null), AddressServiceModel.class);
     }
 }

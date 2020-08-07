@@ -18,5 +18,6 @@ public class UserServiceModel extends BaseServiceModel{
     private String phoneNumber;
     private Set<AddressServiceModel> addresses;
     private Set<RoleServiceModel> authorities;
+    private Set<OrderServiceModel> orders;
 
 }

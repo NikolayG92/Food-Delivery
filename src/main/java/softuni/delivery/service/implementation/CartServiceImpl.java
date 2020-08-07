@@ -54,8 +54,4 @@ public class CartServiceImpl implements CartService {
         cart.setProducts(products);
     }
 
-    @Override
-    public void addProductToCart(ProductViewModel productViewModel, CartViewModel cartViewModel) {
-
-    }
 }

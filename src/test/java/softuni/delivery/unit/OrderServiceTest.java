@@ -3,6 +3,7 @@ package softuni.delivery.unit;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import softuni.delivery.BaseTest;
@@ -16,6 +17,7 @@ import softuni.delivery.model.service.*;
 import softuni.delivery.model.view.CartViewModel;
 import softuni.delivery.repository.AddressRepository;
 import softuni.delivery.repository.OrderRepository;
+import softuni.delivery.repository.ProductRepository;
 import softuni.delivery.repository.UserRepository;
 import softuni.delivery.service.OrderService;
 import softuni.delivery.service.UserService;
@@ -33,7 +35,7 @@ import static org.mockito.Mockito.when;
 
 public class OrderServiceTest extends BaseTest {
 
-    List<Order> orders;
+    Set<Order> orders;
 
     @Autowired
     HttpSession httpSession;
@@ -46,15 +48,21 @@ public class OrderServiceTest extends BaseTest {
     @MockBean
     AddressRepository addressRepository;
 
+    @MockBean
+    ProductRepository productRepository;
+
     @Autowired
     OrderService orderService;
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @Override
     protected void beforeEach() {
-        orders = new ArrayList<>();
+        orders = new HashSet<>();
     }
 
     private Set<Product> getProducts() {
@@ -89,19 +97,21 @@ public class OrderServiceTest extends BaseTest {
 
     }
 
-  /*  @Test
+    /*@Test
     public void deleteOrder_shouldDeleteOrderIfExists(){
 
         Order order = new Order();
         order.setId("1");
-        order.setInPending(true);
-        order.setAccepted(false);
-        order.setOrderedOn(LocalDateTime.now());
-        when(orderRepository.findById("1"))
-                .thenReturn(Optional.of(order));
-        orderRepository.saveAndFlush(order);
+        Order order2 = new Order();
+        order.setId("2");
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+        orders.add(order2);
+        when(orderRepository.findAll())
+                .thenReturn(orders);
 
-        List<Order> orders = this.orderRepository.findAll();
+        OrderServiceModel orderServiceModel = orderService.findById("1");
+        orderService.deleteOrder(orderServiceModel);
         Assert.assertEquals(1, orders.size());
 
     }*/
@@ -132,38 +142,26 @@ public class OrderServiceTest extends BaseTest {
 
     @Test
     public void getOrdersByUser_whenAllDataIsValidShouldReturnOrders() throws UserNotFoundException {
-        User user=new User();
-        User user2=new User();
-        user2.setUsername("Gosho");
-        user.setUsername("Mitko");
-        Order order1=new Order();
-        order1.setUser(user);
-        Order order2=new Order();
-        order2.setUser(user);
-        Order order3=new Order();
-        order3.setUser(user2);
-        orders.add(order1);
-        orders.add(order2);
-        orders.add(order3);
-        Mockito.when(orderRepository.findAllByUser(user))
-                .thenReturn(orders.stream().filter(o->o.getUser().getUsername().equals("Mitko")).collect(Collectors.toList()));
-        UserServiceModel userServiceModel = userService.findByUsername("Mitko");
-        List<Order>actualOrders=orderService.getOrdersByUser(userServiceModel);
-        assertEquals(2,actualOrders.size());
-    }
+        User user = new User();
+        user.setId("1");
 
-    @Test
-    public void getAllOrders_shouldReturnAllOrders() {
-        List<Order> orders = getOrders();
+        user.setOrders(new HashSet<>());
+        user.getOrders().add(new Order());
+        user.getOrders().add(new Order());
 
-        when(orderRepository.findAll())
+
+        List<Order> orders = new ArrayList<>(user.getOrders());
+        orders.forEach(order -> order.setUser(user));
+        when(orderRepository.findAllByUser(user))
                 .thenReturn(orders);
 
-        List<Order> allOrders = orderService.getAllOrders();
+        UserServiceModel userServiceModel = this.modelMapper
+                .map(user, UserServiceModel.class);
+        List<Order> ordersByUser = orderService.getOrdersByUser(userServiceModel);
 
-        assertEquals(orders.size(), allOrders.size());
-        assertEquals(orders.get(0).getUser().getUsername(), allOrders.get(0).getUser().getUsername());
+        assertEquals(2, ordersByUser.size());
     }
+
 
   /*  @Test
     public void createOrder_shouldCreateOrder() throws UserNotFoundException {
@@ -174,11 +172,23 @@ public class OrderServiceTest extends BaseTest {
         products.add(new ProductServiceModel());
         order.setProducts(products);
 
+        List<Product> productList = new ArrayList<>();
+        for (ProductServiceModel product : products) {
+            Product pr = this.modelMapper
+                    .map(product, Product.class);
+            productList.add(pr);
+        }
+
         order.setCustomer("Ivan");
         AddressServiceModel addressServiceModel = new AddressServiceModel();
         addressServiceModel.setId("1");
         order.setAddress(addressServiceModel);
 
+        when(productRepository.findAll())
+                .thenReturn(productList);
+        when(addressRepository.findById("1"))
+                .thenReturn(Optional.of(this.modelMapper
+                .map(addressServiceModel, Address.class)));
         when(userRepository.findByUsername("Ivan"))
                 .thenReturn(Optional.of(new User()));
 
@@ -191,4 +201,96 @@ public class OrderServiceTest extends BaseTest {
         verify(orderRepository)
                 .save(any());
     }*/
+
+    @Test
+    public void getAllOrders_whenExist_shouldReturnAllOrdersInDB() {
+
+        List<Order> orders = new ArrayList<>();
+        orders.add(new Order());
+        orders.add(new Order());
+
+        when(orderRepository.findAll())
+                .thenReturn(orders);
+
+        List<Order> allOrders = orderService.getAllOrders();
+
+        assertEquals(2, allOrders.size());
+
+    }
+
+    @Test
+    public void getAllOrders_whenEmpty_shouldReturnEmptyCollection() {
+        when(orderRepository.findAll())
+                .thenReturn(new ArrayList<>());
+
+        List<Order> allOrders = orderService.getAllOrders();
+
+
+        assertEquals(0, allOrders.size());
+
+    }
+
+    @Test
+    public void getPendingOrders_whenExist_shouldReturnAllOrdersInDB() {
+
+        List<Order> orders = new ArrayList<>();
+        Order order = new Order();
+        order.setInPending(true);
+        Order order1 = new Order();
+        order1.setInPending(true);
+        orders.add(order);
+        orders.add(order1);
+
+        when(orderRepository.findAllByInPendingIsTrue())
+                .thenReturn(orders);
+
+        List<Order> pendingOrders = orderService.getPendingOrders();
+
+        assertEquals(2, pendingOrders.size());
+
+    }
+
+    @Test
+    public void getPendingOrders_whenEmpty_shouldReturnEmptyCollection() {
+        when(orderRepository.findAll())
+                .thenReturn(new ArrayList<>());
+
+        List<Order> allOrders = orderService.getPendingOrders();
+
+
+        assertEquals(0, allOrders.size());
+
+    }
+
+    @Test
+    public void getAcceptedOrders_whenExist_shouldReturnAllOrdersInDB() {
+
+        List<Order> orders = new ArrayList<>();
+        Order order = new Order();
+        order.setInPending(true);
+        Order order1 = new Order();
+        order1.setAccepted(true);
+        orders.add(order);
+        orders.add(order1);
+
+        when(orderRepository.findAllByAcceptedIsTrue())
+                .thenReturn(orders);
+
+        List<Order> acceptedOrders = orderService.getAcceptedOrders();
+
+        assertEquals(2, acceptedOrders.size());
+
+    }
+
+    @Test
+    public void getAcceptedOrders_whenEmpty_shouldReturnEmptyCollection() {
+        when(orderRepository.findAll())
+                .thenReturn(new ArrayList<>());
+
+        List<Order> allOrders = orderService.getAcceptedOrders();
+
+
+        assertEquals(0, allOrders.size());
+
+    }
 }

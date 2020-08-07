@@ -59,7 +59,7 @@
                              </tr>
                              </tbody>
                           </table>
-                          <button type="submit" class="btn btn-warning  mb-3">Choose</button>
+                          <button id ="chooseBtn" type="submit" class="btn btn-warning  mb-3">Choose</button>
                           <th:block sec:authorize="${hasRole('ROLE_MODERATOR')}">
                               <a th:href="@{/products/delete/(id = ${p.id})}" th:method="post" class="btn btn-danger mb-3">Delete</a>
                           </th:block>

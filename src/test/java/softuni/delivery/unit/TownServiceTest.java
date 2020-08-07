@@ -10,6 +10,7 @@ import softuni.delivery.BaseTest;
 import softuni.delivery.exceptions.EntityNotFoundException;
 import softuni.delivery.model.entity.Restaurant;
 import softuni.delivery.model.entity.Town;
+import softuni.delivery.model.service.CategoryServiceModel;
 import softuni.delivery.model.service.TownServiceModel;
 import softuni.delivery.model.view.TownViewModel;
 import softuni.delivery.repository.TownRepository;
@@ -48,14 +49,6 @@ public class TownServiceTest extends BaseTest {
         assertEquals(town.getName(), townServiceModel.getName());
     }
 
-/*    @Test
-    public void findByName_shouldThrowExceptionIfTownDoesntExist(){
-        Town town = new Town();
-        town.setName("Sofia");
-
-       assertThrows(EntityNotFoundException.class, () ->
-               townService.findByName(town.getName()), town.getName());
-    }*/
 
     @Test
     public void findAllTowns_shouldReturnListOfAllTowns(){
@@ -86,23 +79,6 @@ public class TownServiceTest extends BaseTest {
         assertEquals(town.getName(), testTown.getName());
     }
 
- /*   @Test
-    public void addRestaurant_shouldAddRestaurantIfTownAndRestaurantExists(){
-
-        Town town = new Town();
-        town.setId("1");
-        Restaurant restaurant = new Restaurant();
-        restaurant.setId("1");
-        town.setRestaurants(new ArrayList<>());
-        town.getRestaurants().add(restaurant);
-
-        when(townRepository.findById("1"))
-                .thenReturn(Optional.of(town));
-        townService.addRestaurant(town, restaurant);
-
-        assertEquals(1, town.getRestaurants().size());
-    }
-*/
 
     @Test
     public void deleteTownById_shouldDeleteTownIfItExists(){
@@ -139,4 +115,34 @@ public class TownServiceTest extends BaseTest {
         assertEquals(1, restaurantService.findRestaurantsByTownId("1").size());
     }*/
 
+    @Test
+    public void addTown_shouldAddTown(){
+        TownServiceModel town = new TownServiceModel();
+        town.setName("townName");
+        town.setId("1");
+
+        when(townRepository.findById("1"))
+                .thenReturn(Optional.empty());
+
+        townService.addTown(town);
+        verify(townRepository)
+                .saveAndFlush(any());
+
+    }
+
+    @Test
+    public void deleteTownById_shouldRemoveTown(){
+        Town town = new Town();
+        town.setName("townName");
+        town.setId("1");
+
+
+
+        when(townRepository.findById("1"))
+                .thenReturn(Optional.of(town));
+
+        townService.deleteTownById("1");
+        verify(townRepository, times(1))
+                .deleteById("1");
+    }
 }
