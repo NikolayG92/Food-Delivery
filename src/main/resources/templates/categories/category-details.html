@@ -63,6 +63,7 @@
                           <th:block sec:authorize="${hasRole('ROLE_MODERATOR')}">
                               <a th:href="@{/products/delete/(id = ${p.id})}" th:method="post" class="btn btn-danger mb-3">Delete</a>
                           </th:block>
+
                       </form>
                   </td>
               </tr>

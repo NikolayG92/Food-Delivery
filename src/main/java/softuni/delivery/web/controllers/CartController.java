@@ -11,14 +11,13 @@ import softuni.delivery.config.annotations.PageTitle;
 import softuni.delivery.exceptions.DifferentRestaurantException;
 import softuni.delivery.exceptions.UserNotFoundException;
 import softuni.delivery.model.binding.order.AddProductToCartBindingModel;
-import softuni.delivery.model.entity.Category;
-import softuni.delivery.model.entity.Restaurant;
 import softuni.delivery.model.service.CategoryServiceModel;
 import softuni.delivery.model.service.RestaurantServiceModel;
 import softuni.delivery.model.service.UserServiceModel;
 import softuni.delivery.model.view.CartViewModel;
 import softuni.delivery.model.view.ProductViewModel;
 import softuni.delivery.service.*;
+import softuni.delivery.validations.user.AddProductToCartValidator;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -36,9 +35,10 @@ public class CartController extends BaseController {
     private final UserService userService;
     private final CartService cartService;
     private final CategoryService categoryService;
+    private final AddProductToCartValidator validator;
 
     public CartController(ModelMapper modelMapper, ProductService productService, OrderService orderService, RestaurantService restaurantService, UserService userService
-            , CartService cartService, CategoryService categoryService) {
+            , CartService cartService, CategoryService categoryService, AddProductToCartValidator validator) {
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.orderService = orderService;
@@ -46,6 +46,7 @@ public class CartController extends BaseController {
         this.userService = userService;
         this.cartService = cartService;
         this.categoryService = categoryService;
+        this.validator = validator;
     }
 
 
