@@ -18,5 +18,4 @@ public class AddProductToCartBindingModel {
     @NotNull(message = "Quantity cannot be less than 1!")
     @Positive(message = "Quantity cannot be less than 1!")
     private int quantity;
-    private CategoryServiceModel category;
 }

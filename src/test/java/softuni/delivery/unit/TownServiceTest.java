@@ -49,6 +49,16 @@ public class TownServiceTest extends BaseTest {
         assertEquals(town.getName(), townServiceModel.getName());
     }
 
+    @Test
+    public void findByName_shouldThrow_ifDoesntExist(){
+        Town town = new Town();
+
+        town.setId("1");
+
+        assertThrows(Exception.class, () ->
+                townService.findByName(town.getName()), town.getName());
+    }
+
 
     @Test
     public void findAllTowns_shouldReturnListOfAllTowns(){

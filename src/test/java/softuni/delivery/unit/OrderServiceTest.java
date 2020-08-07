@@ -9,10 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import softuni.delivery.BaseTest;
 import softuni.delivery.exceptions.EntityNotFoundException;
 import softuni.delivery.exceptions.UserNotFoundException;
-import softuni.delivery.model.entity.Address;
-import softuni.delivery.model.entity.Order;
-import softuni.delivery.model.entity.Product;
-import softuni.delivery.model.entity.User;
+import softuni.delivery.model.entity.*;
 import softuni.delivery.model.service.*;
 import softuni.delivery.model.view.CartViewModel;
 import softuni.delivery.repository.AddressRepository;
@@ -30,8 +27,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class OrderServiceTest extends BaseTest {
 
@@ -97,7 +93,7 @@ public class OrderServiceTest extends BaseTest {
 
     }
 
-    /*@Test
+    @Test
     public void deleteOrder_shouldDeleteOrderIfExists(){
 
         Order order = new Order();
@@ -114,7 +110,7 @@ public class OrderServiceTest extends BaseTest {
         orderService.deleteOrder(orderServiceModel);
         Assert.assertEquals(1, orders.size());
 
-    }*/
+    }
 
     @Test
     public void getOrderById_whenOrderExists_shouldReturnIt() {
@@ -292,5 +288,35 @@ public class OrderServiceTest extends BaseTest {
 
         assertEquals(0, allOrders.size());
 
+    }
+
+    @Test
+    public void deleteOrder_shouldRemoveOrder(){
+        Order order = new Order();
+        order.setInPending(true);
+        order.setAccepted(false);
+        order.setOrderedOn(LocalDateTime.now());
+        order.setId("1");
+        order.setProducts(new HashSet<>());
+
+        User user = new User();
+        user.setId("1");
+        user.setUsername("username");
+        user.setFirstName("firstname");
+        user.setLastName("lastname");
+        user.setOrders(new HashSet<>());
+        user.getOrders().add(order);
+        user.setPhoneNumber("1234");
+        user.setAuthorities(new HashSet<>());
+        user.setAddresses(new HashSet<>());
+        order.setUser(user);
+        when(orderRepository.findById("1"))
+                .thenReturn(Optional.of(order));
+        when(userRepository.findById("1"))
+                .thenReturn(Optional.of(user));
+        OrderServiceModel orderServiceModel = orderService.findById("1");
+        orderService.deleteOrder(orderServiceModel);
+        verify(orderRepository)
+                .delete(any());
     }
 }

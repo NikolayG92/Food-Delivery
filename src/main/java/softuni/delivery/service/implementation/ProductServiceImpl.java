@@ -33,7 +33,8 @@ public class ProductServiceImpl implements ProductService {
     public void addProduct(ProductServiceModel productServiceModel) {
         Product product = this.modelMapper
                 .map(productServiceModel, Product.class);
-        if(product.getImageUrl().isEmpty() || product.getImageUrl() == null){
+
+        if(product.getImageUrl() == null){
             product.setImageUrl("/img/no-image-available.jpg");
         }
         this.productRepository.saveAndFlush(product);

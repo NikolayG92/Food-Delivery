@@ -2,6 +2,7 @@ package softuni.delivery.unit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import softuni.delivery.BaseTest;
@@ -37,6 +38,9 @@ public class ProductServiceTest extends BaseTest {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @Test
     public void findByName_whenProductExists_shouldReturnCorrectProduct(){
         Product product = new Product();
@@ -66,7 +70,6 @@ public class ProductServiceTest extends BaseTest {
         Assertions.assertEquals(product.getId(), productServiceModel.getId());
     }
 
-/*
     @Test
     public void findByCategoryId_whenCategoryExists_shouldReturnAllProducts(){
         Category category = new Category();
@@ -77,10 +80,12 @@ public class ProductServiceTest extends BaseTest {
         product1.setName("Margarita");
         product1.setCategory(category);
         product1.setId("1");
+        product1.setImageUrl("image");
         Product product2 = new Product();
         product2.setName("Quattro Formaggi");
         product2.setCategory(category);
         product2.setId("2");
+        product2.setImageUrl("image");
 
         when(categoryRepository.findById("1"))
                 .thenReturn(Optional.of(category));
@@ -88,20 +93,22 @@ public class ProductServiceTest extends BaseTest {
 
         assertEquals(2,  productService.findAllByCategoryId("1").size());
     }
-*/
 
     @Test
     public void addProduct_shouldAddProduct(){
         ProductServiceModel product = new ProductServiceModel();
         product.setName("productName");
         product.setId("1");
+        product.setImageUrl("image");
 
         when(productRepository.findById("1"))
                 .thenReturn(Optional.empty());
+
 
         productService.addProduct(product);
         verify(productRepository)
                 .saveAndFlush(any());
 
     }
+
 }

@@ -20,7 +20,7 @@
                 <a th:text="*{name}" th:href="@{/restaurants/restaurant/(id = *{id})}" class="btn btn-info mb-2"></a>
                 <th:block sec:authorize="${hasRole('ROLE_MODERATOR')}">
                     <a th:href="@{/categories/add/(id = *{id})}" class="btn btn-primary mb-2">Add Category</a>
-                    <a th:href="@{/restaurants/delete/(id = *{id})}" class="btn-danger btn-info mb-2">Delete</a>
+                    <a th:href="@{/restaurants/delete/(id = *{id})}" class="btn-danger btn-info mb-2" id="deleteBtn">Delete</a>
                 </th:block>
             </div>
         </div>
@@ -36,5 +36,6 @@
 <footer class="mt-5">
     <th:block th:include="~{fragments/foot}"></th:block>
 </footer>
+
 </body>
 </html>
