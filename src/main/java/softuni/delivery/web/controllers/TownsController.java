@@ -22,7 +22,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/towns")
 @PreAuthorize("isAuthenticated()")
-public class TownsController {
+public class TownsController extends BaseController{
 
     private final ModelMapper modelMapper;
     private final TownService townService;
@@ -41,27 +41,25 @@ public class TownsController {
     @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageTitle("Add Town")
-    public String addTown(Model model){
-        if(!model.containsAttribute("townAddBindingModel")){
-            model.addAttribute("townAddBindingModel", new TownAddBindingModel());
-        }
-        return "admin/add-town";
+    public ModelAndView addTown(ModelAndView modelAndView,
+                                @ModelAttribute TownAddBindingModel townAddBindingModel){
+        modelAndView.addObject("townAddBindingModel",townAddBindingModel);
+        return view("/admin/add-town", modelAndView);
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageTitle("Add Town")
-    public String addTownConfirm(@Valid @ModelAttribute("townAddBindingModel")
+    public ModelAndView addTownConfirm(@Valid @ModelAttribute("townAddBindingModel")
                                          TownAddBindingModel townAddBindingModel,
                                  BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) throws IOException {
+                                       ModelAndView modelAndView) throws IOException {
 
         addTownValidator.validate(townAddBindingModel, bindingResult);
 
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("townAddBindingModel", townAddBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.BindingResult.townAddBindingModel", bindingResult);
-            return "admin/add-town";
+            modelAndView.addObject(townAddBindingModel);
+            return view("/admin/add-town", modelAndView);
         }
 
 
@@ -69,7 +67,7 @@ public class TownsController {
                 .map(townAddBindingModel, TownServiceModel.class);
         imgValidate(townAddBindingModel, townServiceModel);
         this.townService.addTown(townServiceModel);
-        return "redirect:/home";
+        return redirect("/home");
     }
 
     @GetMapping("/delete")

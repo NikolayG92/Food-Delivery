@@ -48,35 +48,25 @@ public class ProductsController extends BaseController{
     @GetMapping("/add")
     @PageTitle("Add Product")
     public ModelAndView addProduct(@RequestParam("id") String id,
-                                   Model model, ModelAndView modelAndView){
+                                   @ModelAttribute ProductAddBindingModel productAddBindingModel, ModelAndView modelAndView){
 
-        if(!model.containsAttribute("productAddBindingModel")) {
-            ProductAddBindingModel productAddBindingModel = new ProductAddBindingModel();
-            productAddBindingModel.setCategoryId(id);
-            model.addAttribute("productAddBindingModel", productAddBindingModel);
-
-        }
-        modelAndView.addObject("towns", this.townService.findAllTowns());
-        modelAndView.addObject("restaurants", this.restaurantService
-                .findAllRestaurants());
-        modelAndView.addObject("categories", this.categoryService
-                .findAllCategories());
-
-        return view("admin/add-product");
+        productAddBindingModel.setCategoryId(id);
+        modelAndView.addObject("productAddBindingModel", productAddBindingModel);
+        return view("/admin/add-product", modelAndView);
     }
 
     @PostMapping("/add")
-    public String addConfirm(@RequestParam("id") String id,
+    public ModelAndView addConfirm(@RequestParam("id") String id,
                              @Valid @ModelAttribute("productAddBindingModel")
                                      ProductAddBindingModel productAddBindingModel,
                              BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) throws IOException {
+                                   ModelAndView modelAndView) throws IOException {
 
         addProductValidator.validate(productAddBindingModel, bindingResult);
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("productAddBindingModel", productAddBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.BindingResult.productAddBindingModel", bindingResult);
-            return "admin/add-product";
+            productAddBindingModel.setCategoryId(id);
+            modelAndView.addObject("productAddBindingModel", productAddBindingModel);
+            return view("/admin/add-product", modelAndView);
         }
 
         ProductServiceModel product = this
@@ -88,7 +78,7 @@ public class ProductsController extends BaseController{
         product.setCategory(category);
         imgValidate(productAddBindingModel, product);
         this.productService.addProduct(product);
-        return "redirect:/home";
+        return redirect("/home");
 
     }
 

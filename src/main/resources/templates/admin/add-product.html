@@ -38,51 +38,9 @@
             <div class="label-holder text-justify d-flex justify-content-center">
                 <label for="price" class="h3 mb-2">Price</label>
             </div>
-            <input th:field="*{price}" th:errorclass="bg-warning" type="number" step="0.1" class="form-control" id="price" name="price"/>
+            <input th:field="*{price}" th:errorclass="bg-warning" type="number" step="0.01" class="form-control" id="price" name="price"/>
             <small th:each="e : ${#fields.errors('price')}" th:text="${e}" class="text-error"></small>
         </div>
-       <!-- <div class="form-group badge-primary">
-            <div class="text-justify label-holder d-flex justify-content-center">
-                <label for="town" class="h4 mb-2">Town</label>
-            </div>
-            <select class="browser-default custom-select" id="town" name="town">
-                <option value="">Select town</option>
-                <option th:each="t : ${towns}"
-                        th:value="${t.name}"
-                        th:text="${t.name}"></option>
-
-            </select>
-            <small th:each="e : ${#fields.errors('town')}"  th:text="${e}"
-                   class="text-error"></small>
-        </div>
-        <div class="form-group badge-primary">
-            <div class="text-justify label-holder d-flex justify-content-center">
-                <label for="restaurant" class="h4 mb-2">Town</label>
-            </div>
-            <select class="browser-default custom-select" id="restaurant" name="restaurant">
-                <option value="">Select restaurant</option>
-                <option th:each="r : ${restaurants}"
-                        th:value="${r.name}"
-                        th:text="${r.name}"></option>
-
-            </select>
-            <small th:each="e : ${#fields.errors('restaurant')}"  th:text="${e}"
-                   class="text-error"></small>
-        </div>
-        <div class="form-group badge-primary">
-            <div class="text-justify label-holder d-flex justify-content-center">
-                <label for="category" class="h4 mb-2">Category</label>
-            </div>
-            <select class="browser-default custom-select" id="category" name="category">
-                <option value="">Select category</option>
-                <option th:each="c : ${categories}"
-                        th:value="${c.name}"
-                        th:text="${c.name}"></option>
-
-            </select>
-            <small th:each="e : ${#fields.errors('category')}"  th:text="${e}"
-                   class="text-error"></small>
-        </div>-->
         <div class="form-group badge-primary">
             <div class="label-holder text-justify d-flex justify-content-center">
                 <label for="imageUrl" class="h3 mb-2">Select image</label>

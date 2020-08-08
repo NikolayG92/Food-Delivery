@@ -47,16 +47,13 @@ public class CategoryController extends BaseController{
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageTitle("Add Category")
     public ModelAndView addCategory(@RequestParam("id") String id,
-                                    Model model){
+                                    ModelAndView modelAndView,
+                                    @ModelAttribute CategoryAddBindingModel categoryAddBindingModel){
 
-        if(!model.containsAttribute("categoryAddBindingModel")) {
-            CategoryAddBindingModel categoryAddBindingModel = new CategoryAddBindingModel();
-            categoryAddBindingModel.setRestaurantId(id);
-            model.addAttribute("categoryAddBindingModel",categoryAddBindingModel);
+        categoryAddBindingModel.setRestaurantId(id);
+        modelAndView.addObject("categoryAddBindingModel", categoryAddBindingModel);
 
-        }
-
-            return view("admin/add-category");
+            return view("/admin/add-category", modelAndView);
     }
 
     @PostMapping("/add")
@@ -65,12 +62,12 @@ public class CategoryController extends BaseController{
                              @Valid @ModelAttribute("categoryAddBindingModel")
                                      CategoryAddBindingModel categoryAddBindingModel,
                              BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) throws IOException {
+                             ModelAndView modelAndView) throws IOException {
         addCategoryValidator.validate(categoryAddBindingModel, bindingResult);
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("categoryAddBindingModel", categoryAddBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.BindingResult.categoryAddBindingModel", bindingResult);
-            return view("admin/add-category");
+           modelAndView.addObject("categoryAddBindingModel", categoryAddBindingModel);
+
+           return view("/admin/add-category", modelAndView);
         }
 
         CategoryServiceModel category = this

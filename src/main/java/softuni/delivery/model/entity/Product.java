@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseEntity{
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "size", nullable = false)
     private int size;

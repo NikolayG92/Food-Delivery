@@ -25,7 +25,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/restaurants")
 @PreAuthorize("isAuthenticated()")
-public class RestaurantController {
+public class RestaurantController extends BaseController{
 
     private final RestaurantService restaurantService;
     private final ModelMapper modelMapper;
@@ -49,27 +49,23 @@ public class RestaurantController {
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageTitle("Add Restaurant")
     public ModelAndView addRestaurant(ModelAndView modelAndView,
-                                      Model model){
-        if(!model.containsAttribute("restaurantAddBindingModel")){
-            model.addAttribute(new RestaurantAddBindingModel());
-        }
+                                      @ModelAttribute RestaurantAddBindingModel restaurantAddBindingModel){
+        modelAndView.addObject("restaurantAddBindingModel", restaurantAddBindingModel);
         modelAndView.addObject("towns", this.townService.findAllTowns());
-        modelAndView.setViewName("admin/add-restaurant");
 
-        return modelAndView;
+        return view("/admin/add-restaurant", modelAndView);
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    public String addConfirm(@Valid @ModelAttribute("restaurantAddBindingModel")
+    public ModelAndView addConfirm(@Valid @ModelAttribute("restaurantAddBindingModel")
                              RestaurantAddBindingModel restaurantAddBindingModel,
                              BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) throws IOException {
+                                   ModelAndView modelAndView) throws IOException {
         addRestaurantValidator.validate(restaurantAddBindingModel, bindingResult);
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("restaurantAddBindingModel", restaurantAddBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.BindingResult.restaurantAddBindingModel", bindingResult);
-            return "admin/add-restaurant";
+            modelAndView.addObject(restaurantAddBindingModel);
+            return view("/admin/add-restaurant", modelAndView);
         }
 
         RestaurantServiceModel restaurant = this
@@ -80,7 +76,7 @@ public class RestaurantController {
         imgValidate(restaurantAddBindingModel, restaurant);
         this.restaurantService.addRestaurant(restaurant);
 
-        return "redirect:/home";
+        return redirect("/home");
 
     }
 
