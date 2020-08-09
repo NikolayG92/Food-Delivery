@@ -151,16 +151,16 @@ public class UsersController extends BaseController{
 
     @PostMapping("/add/address")
     @PreAuthorize("isAuthenticated()")
-    public String addAddressConfirm(@Valid @ModelAttribute("addAddressBindingModel")
+    public ModelAndView addAddressConfirm(@Valid @ModelAttribute("addAddressBindingModel")
                                     AddAddressBindingModel addAddressBindingModel,
                                     BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes,
-                                    Principal principal) throws UserNotFoundException {
+                                    Principal principal,
+                                          ModelAndView modelAndView) throws UserNotFoundException {
         addAddressValidator.validate(addAddressBindingModel, bindingResult);
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("addAddressBindingModel", addAddressBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.BindingResult.addAddressBindingModel", bindingResult);
-            return "user/add-address";
+            modelAndView.addObject("towns", this.townService.findAllTowns());
+            modelAndView.addObject("addAddressBindingModel", addAddressBindingModel);
+            return view("/user/add-address", modelAndView);
         }
 
 
@@ -173,7 +173,7 @@ public class UsersController extends BaseController{
         address.setUser(user);
         this.userService.addAddress(this.modelMapper
         .map(address, AddressServiceModel.class));
-        return "redirect:/home";
+        return redirect("/home");
     }
 
     @GetMapping("/all-users")
