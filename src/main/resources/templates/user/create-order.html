@@ -71,7 +71,6 @@
                                 <option th:each="a : ${addresses}"
                                         th:value="${a.id}"
                                         th:text="|${a.town.name}, ${a.street}, ${a.number}|"></option>
-
                             </select>
                             <small th:each="e : ${#fields.errors('address')}"  th:text="${e}"
                                    class="text-danger"></small>

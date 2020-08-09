@@ -67,7 +67,8 @@ public class OrdersController extends BaseController{
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes,
                                HttpSession httpSession,
-                               Principal principal) throws UserNotFoundException {
+                               Principal principal,
+                                     ModelAndView modelAndView) throws UserNotFoundException {
 
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("orderAddBindingModel", orderAddBindingModel);
