@@ -16,6 +16,7 @@ import javax.validation.constraints.Positive;
 public class AddProductToCartBindingModel {
 
     @NotNull(message = "Quantity cannot be less than 1!")
-    @Positive(message = "Quantity cannot be less than 1!")
+    @Min(value = 1, message = "Quantity cannot be less than 1!")
     private int quantity;
+    private String categoryId;
 }

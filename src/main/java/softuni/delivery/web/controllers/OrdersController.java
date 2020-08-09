@@ -62,7 +62,7 @@ public class OrdersController extends BaseController{
 
     @PostMapping("/create-order")
     @PreAuthorize("isAuthenticated()")
-    public String orderConfirm(@Valid @ModelAttribute("orderAddBindingModel")
+    public ModelAndView orderConfirm(@Valid @ModelAttribute("orderAddBindingModel")
                                OrderAddBindingModel orderAddBindingModel,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes,
@@ -72,7 +72,7 @@ public class OrdersController extends BaseController{
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("orderAddBindingModel", orderAddBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.BindingResult.orderAddBindingModel", bindingResult);
-            return "user/create-order";
+            return redirect("/orders/create-order");
         }
 
         OrderCreateServiceModel order = this.modelMapper
@@ -84,7 +84,7 @@ public class OrdersController extends BaseController{
 
         this.orderService.createOrder(order, cartViewModel, username);
         ((CartViewModel) httpSession.getAttribute("cart")).setProducts(new ArrayList<>());
-        return "redirect:/home";
+        return redirect("/home");
 
 
     }

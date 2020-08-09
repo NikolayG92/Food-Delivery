@@ -15,6 +15,12 @@
     <hr class="my-3"/>
     <div class="container">
         <div class="row mb-4 d-flex justify-content-around">
+            <th:block th:if="${products.size() == 0}">
+                <h1 class="text-center mt-2">
+                        <span class="badge badge-pill badge-dark">
+                         We are sorry but for now there aren't products in this category
+                         </span></h1>
+            </th:block>
             <div th:each="p : ${products}" th:object="${p}" class="col-md-3 d-flex flex-column text-center mb-3"
             style="width: 150px; height: 150px">
                 <div class="bg-info" >
@@ -44,7 +50,7 @@
                   <td colspan="3">
                       <form th:object="${addProductToCartBindingModel}"
                             th:action="@{/cart/add-product/(id = ${p.id})}"
-                            method="post">
+                            method="POST">
                           <table width="100%" cellspacing="0" cellpadding="0" class="table-primary">
                              <tbody>
                              <tr>
@@ -53,23 +59,17 @@
                                  <td width="90px" th:text="|${p.price} lv.|">
                                  </td>
                                  <td width="90px" type="number">
-                                     <input th:field="*{quantity}" th:errorclass="bg-warning" type="number" class="form-control" id="quantity" name="quantity"          />
+                                     <input th:field="*{quantity}" th:errorclass="bg-warning" type="number" class="form-control" id="quantity" name="quantity"/>
                                      <small th:each="e : ${#fields.errors('quantity')}" th:text="${e}" class="text-error"></small>
                                  </td>
                              </tr>
                              </tbody>
                           </table>
-                          <button id ="chooseBtn" type="submit" class="btn btn-warning  mb-3">Choose</button>
+                          <button type="submit" class="btn btn-warning  mb-3">Choose</button>
                           <th:block sec:authorize="${hasRole('ROLE_MODERATOR')}">
                               <a th:href="@{/products/delete/(id = ${p.id})}" th:method="post" class="btn btn-danger mb-3">Delete</a>
                           </th:block>
 
-                          <th:block th:if="${products.size() == 0}">
-                              <h1 class="text-center mt-2">
-                        <span class="badge badge-pill badge-dark">
-                         We are sorry but for now there aren't products in this category
-                         </span></h1>
-                          </th:block>
                       </form>
                   </td>
               </tr>

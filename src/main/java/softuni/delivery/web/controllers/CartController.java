@@ -11,8 +11,6 @@ import softuni.delivery.config.annotations.PageTitle;
 import softuni.delivery.exceptions.DifferentRestaurantException;
 import softuni.delivery.exceptions.UserNotFoundException;
 import softuni.delivery.model.binding.order.AddProductToCartBindingModel;
-import softuni.delivery.model.entity.Category;
-import softuni.delivery.model.entity.Restaurant;
 import softuni.delivery.model.service.CategoryServiceModel;
 import softuni.delivery.model.service.RestaurantServiceModel;
 import softuni.delivery.model.service.UserServiceModel;
@@ -21,6 +19,7 @@ import softuni.delivery.model.view.ProductViewModel;
 import softuni.delivery.service.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
@@ -70,16 +69,19 @@ public class CartController extends BaseController {
 
     @PostMapping("/add-product")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView addProduct(AddProductToCartBindingModel addProductToCartBindingModel,
+    public ModelAndView addProduct(
+                                   AddProductToCartBindingModel addProductToCartBindingModel,
                                    @RequestParam("id") String id,
                                    ModelAndView modelAndView,
                                    HttpSession httpSession,
-                                   RedirectAttributes redirectAttributes,
-                                   BindingResult bindingResult
+                                   BindingResult bindingResult,
+                                   RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addProductToCartBindingModel", addProductToCartBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.BindingResult.addProductToCartBindingModel", bindingResult);
+            modelAndView.addObject("addProductToCartBindingModel", addProductToCartBindingModel);
+            return view("/categories/category-details", modelAndView);
         }
         ProductViewModel product = this.modelMapper
                 .map(this.productService.getProductById(id), ProductViewModel.class);
@@ -94,34 +96,32 @@ public class CartController extends BaseController {
             BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(product.getQuantity()));
 
             product.setTotalPrice(totalPrice);
-        }
+            boolean isInCart = false;
+            if (cart.getProducts().size() > 0) {
+                CategoryServiceModel firstProductCategory = this.modelMapper
+                        .map(cart.getProducts().get(0).getCategory(), CategoryServiceModel.class);
+                firstProductCategory.setRestaurant(restaurantService.findByCategoryId(firstProductCategory.getId()));
+                if (!firstProductCategory.getRestaurant().getId().equals(restaurantServiceModel.getId())) {
+                    throw new DifferentRestaurantException("You have products from other restaurant in your cart!");
+                }
+                for (ProductViewModel productViewModel : ((CartViewModel) httpSession.getAttribute("cart")).getProducts()) {
+                    if (productViewModel.getName().equals(product.getName())) {
+                        productViewModel.setQuantity(productViewModel.getQuantity() + product.getQuantity());
+                        productViewModel.setTotalPrice(productViewModel.getPrice()
+                                .multiply(BigDecimal.valueOf(productViewModel.getQuantity())));
+                        isInCart = true;
+                    }
 
 
-        boolean isInCart = false;
-        if (cart.getProducts().size() > 0) {
-            CategoryServiceModel firstProductCategory = this.modelMapper
-                    .map(cart.getProducts().get(0).getCategory(), CategoryServiceModel.class);
-            firstProductCategory.setRestaurant(restaurantService.findByCategoryId(firstProductCategory.getId()));
-            if (!firstProductCategory.getRestaurant().getId().equals(restaurantServiceModel.getId())) {
-                throw new DifferentRestaurantException("You have products from other restaurant in your cart!");
-            }
-            for (ProductViewModel productViewModel : ((CartViewModel) httpSession.getAttribute("cart")).getProducts()) {
-                if (productViewModel.getName().equals(product.getName())) {
-                    productViewModel.setQuantity(productViewModel.getQuantity() + product.getQuantity());
-                    productViewModel.setTotalPrice(productViewModel.getPrice()
-                            .multiply(BigDecimal.valueOf(productViewModel.getQuantity())));
-                    isInCart = true;
                 }
 
-
             }
-
-        }
-        if (isInCart) {
-            return redirect(String.format("/categories/category/?id=%s",
-                    product.getCategory().getId()));
-        } else {
-            cart.getProducts().add(product);
+            if (isInCart) {
+                return redirect(String.format("/categories/category/?id=%s",
+                        product.getCategory().getId()));
+            } else {
+                cart.getProducts().add(product);
+            }
         }
         httpSession.removeAttribute("cart");
         httpSession.setAttribute("cart", cart);

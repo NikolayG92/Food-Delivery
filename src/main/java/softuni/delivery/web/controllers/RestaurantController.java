@@ -65,6 +65,7 @@ public class RestaurantController extends BaseController{
         addRestaurantValidator.validate(restaurantAddBindingModel, bindingResult);
         if(bindingResult.hasErrors()){
             modelAndView.addObject(restaurantAddBindingModel);
+            modelAndView.addObject("towns", this.townService.findAllTowns());
             return view("/admin/add-restaurant", modelAndView);
         }
 

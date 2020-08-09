@@ -65,6 +65,7 @@ public class CategoryController extends BaseController{
                              ModelAndView modelAndView) throws IOException {
         addCategoryValidator.validate(categoryAddBindingModel, bindingResult);
         if(bindingResult.hasErrors()){
+            categoryAddBindingModel.setRestaurantId(id);
            modelAndView.addObject("categoryAddBindingModel", categoryAddBindingModel);
 
            return view("/admin/add-category", modelAndView);
