@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
                         productViewModel.setDescription(String.format
                                 ("/%s/", product.getDescription()));
                     }else{
-                        productViewModel.setDescription(null);
+                        productViewModel.setDescription("");
                     }
 
                     return productViewModel;
