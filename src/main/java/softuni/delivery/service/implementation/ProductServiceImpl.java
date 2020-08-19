@@ -50,8 +50,13 @@ public class ProductServiceImpl implements ProductService {
                             this.modelMapper
                                     .map(product, ProductViewModel.class);
 
-                    productViewModel.setDescription(String.format
-                            ("/%s/", product.getDescription()));
+                    if(product.getDescription().length() > 0){
+                        productViewModel.setDescription(String.format
+                                ("/%s/", product.getDescription()));
+                    }else{
+                        productViewModel.setDescription(null);
+                    }
+
                     return productViewModel;
                 }).collect(Collectors.toList());
 

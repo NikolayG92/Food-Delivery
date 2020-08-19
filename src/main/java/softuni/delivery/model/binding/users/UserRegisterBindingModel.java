@@ -23,6 +23,7 @@ public class UserRegisterBindingModel {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    @Email
     private String email;
     private String password;
     private String confirmPassword;

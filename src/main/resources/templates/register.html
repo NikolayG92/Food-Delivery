@@ -44,9 +44,9 @@
         </div>
         <div class="form-group badge-primary">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="username" class="h4 mb-2 text-justify">Email</label>
+                <label for="email" class="h4 mb-2 text-justify">Email</label>
             </div>
-            <input th:field="*{email}" th:errorclass="bg-warning" type="text" class="form-control" id="email" name="email"/>
+            <input th:field="*{email}" th:errorclass="bg-warning" type="email" class="form-control" id="email" name="email"/>
             <small th:each="e : ${#fields.errors('email')}" th:text="${e}" class="text-error">Incorrect username!</small>
             <small th:if="${emailExists}" class="text-error">User with that email already exists!</small>
         </div>

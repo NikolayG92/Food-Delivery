@@ -122,7 +122,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Role role = this.roleRepository
                 .findByAuthority(roleServiceModel.getAuthority());
         if(user != null){
-            user.getAuthorities().add(role);
+            user.getAuthorities().clear();
+            switch (role.getAuthority()){
+                case "ROLE_USER":
+                    user.getAuthorities().add(this.modelMapper
+                            .map(roleService.findByAuthority("ROLE_USER"), Role.class));
+                    break;
+                case "ROLE_MODERATOR":
+                    user.getAuthorities().add(this.modelMapper
+                            .map(roleService.findByAuthority("ROLE_USER"), Role.class));
+                    user.getAuthorities().add(this.modelMapper
+                            .map(roleService.findByAuthority("ROLE_MODERATOR"), Role.class));
+                    break;
+                case "ROLE_ADMIN":
+                    user.getAuthorities().add(this.modelMapper
+                            .map(roleService.findByAuthority("ROLE_USER"), Role.class));
+                    user.getAuthorities().add(this.modelMapper
+                            .map(roleService.findByAuthority("ROLE_MODERATOR"), Role.class));
+                    user.getAuthorities().add(this.modelMapper
+                            .map(roleService.findByAuthority("ROLE_ADMIN"), Role.class));
+                    break;
+            }
             this.userRepository.save(user);
         }
     }

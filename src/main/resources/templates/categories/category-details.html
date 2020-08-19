@@ -22,18 +22,18 @@
                          </span></h1>
             </th:block>
             <div th:each="p : ${products}" th:object="${p}" class="col-md-3 d-flex flex-column text-center mb-3"
-            style="width: 150px; height: 150px">
+            style="width: 250px; height: 270px">
                 <div class="bg-info" >
                     <img th:src="*{imageUrl}" width="60" height="60">
                     <h3 th:text="*{name}" style="font-family: sans-serif"></h3>
-                    <h6 th:text="*{description}" style="font-family: sans-serif"></h6>
+                    <h6 th:text="*{description}" style="font-family: sans-serif; height: 70px"></h6>
                 </div>
                 <td colspan="3">
                     <form method="POST">
-                        <table width="100%" cellspacing="0" cellpadding="0" class="table-primary">
+                        <table cellspacing="0" cellpadding="0" class="table-primary">
                             <tbody>
-                            <tr>
-                                <td width="90px">
+                            <tr style="">
+                                <td width="85px">
                                     Size
                                 </td>
                                 <td width="90px">

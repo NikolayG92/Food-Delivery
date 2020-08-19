@@ -15,7 +15,7 @@
     <hr class="my-3"/>
     <div class="container">
         <div class="row mb-4 d-flex justify-content-around">
-            <div th:each="r : ${restaurants}" th:object="${r}" class="col-md-3 d-flex flex-column text-center mb-3">
+            <div th:each="r : ${restaurants}" th:object="${r}" class="col-md-3 d-flex flex-column text-center mb-3" style="width: 250px">
                 <img th:src="*{imageUrl}" class="img-thumb" width="300" height="300"/>
                 <a th:text="*{name}" th:href="@{/restaurants/restaurant/(id = *{id})}" class="btn btn-info mb-2"></a>
                 <th:block sec:authorize="${hasRole('ROLE_MODERATOR')}">

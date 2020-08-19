@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:include="~{fragments/head.html}"></th:block>
 </head>
@@ -14,7 +15,7 @@
     <hr class="my-3"/>
     <div class="container">
         <div class="row mb-4 d-flex justify-content-around">
-            <div th:each="t : ${towns}" th:object="${t}" class="col-md-3 d-flex flex-column text-center mb-3">
+            <div th:each="t : ${towns}" th:object="${t}" class="col-md-3 d-flex flex-column text-center mb-3" style="width: 250px">
                 <img th:src="*{imageUrl}" class="img-thumb" width="300" height="300"/>
                 <a th:text="*{name}" th:href="@{/towns/town/(id = *{id})}" class="btn btn-info mb-2"></a>
                 <th:block sec:authorize="${hasRole('ROLE_MODERATOR')}">
@@ -30,7 +31,9 @@
             </span></h1>
             </th:block>
     </div>
+
 </main>
+
 <footer class="mt-5">
     <th:block th:include="~{fragments/foot}"></th:block>
 </footer>

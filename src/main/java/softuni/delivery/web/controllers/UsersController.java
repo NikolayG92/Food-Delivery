@@ -190,6 +190,7 @@ public class UsersController extends BaseController{
 
     @PostMapping("/all-users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("All Users")
     public ModelAndView changeUserRole(@RequestParam("id") String id,
                                        ModelAndView modelAndView,
                                        RoleChangeBindingModel roleChangeBindingModel){
